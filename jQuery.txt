@@ -1,0 +1,58 @@
+■選択したファイルのクリア処理
+http://combitaro.net/article/44
+
+■idを付けて以下の記述でクリアできる。
+$('#id_name').val('');
+
+Add table row in jQuery
+https://stackoverflow.com/questions/171027/add-table-row-in-jquery
+
+【サンプルソース】
+
+    <form id="myForm" name="myForm" method="POST" action="">
+        <div>
+            <table id="myTable">
+            <tr>
+                <td><input type="file" name="file_a" /></td>
+                <td><button class="hello">upload</button></td>
+                <td></td>
+            </tr>
+            </table>
+        </div>
+    
+        <button type="button" id="add_tr">add</button>
+    </form>
+
+    <script>
+        var i = 1;
+    
+        $("#add_tr").click(function(e) {
+            $('#myTable tr:last').after(`
+                <tr>
+                    <td><input type="file" name="top_pc" class="top_pc_` + i + `"></td>
+                    <td><button type="button" class="btnUploadFiles">upload</button></td>
+                    <td><button type="button" class="btnClearFile" add_seq="` + i + `">clear</button></td>
+                </tr>
+            `);
+            i++;
+        });
+    
+        $('#myTable').on("click", ".btnUploadFiles", function(e) {
+            console.log(e.target.innerHTML);
+        });
+    
+        $('#myTable').on("click", ".btnClearFile", function(e) {
+            var addSeq = $(this).attr('add_seq');
+            $('.top_pc_' + addSeq).val('');
+        });
+    </script>
+
+※クリアボタンにadd_seq属性を持たせることで特定のファイルコントローラーのみをクリアする。
+　ファイルコントローラーには連番のクラスを指定(idでもいいはず)
+※buttonタグにはtype="button"と記述しないとsubmitボタン扱いされるので要注意。
+
+■懸案事項
+・複数の同じname属性を持ったファイルコントローラーはどのような動作をするのか。
+
+■新規画像アップロードの処理フロー
+・ctts-seqをPOSTしていなければ新規扱い？
